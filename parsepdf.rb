@@ -1,5 +1,14 @@
 require 'pdf-reader'
 
-class ParsePdf
-  
+class Parser
+
+  def initialize()
+    
+  end
+
+  def open_pdf
+    
+  end
 end
+
+# a = ParsePdf.new("test")
