@@ -1,7 +1,7 @@
 require 'pdf-reader'
 
 class Parser
-  attr_accessor :input_pdf, :topics
+  attr_accessor :page_range, :input_pdf, :topics
 
   REGEXP = {
     "a" => {
@@ -14,25 +14,36 @@ class Parser
     }
   }
 
-  def initialize(input_pdf)
+  SET = "a"
+
+  def initialize(input_pdf, page_range=nil)
     @input_pdf = input_pdf
+    @page_range = page_range
   end
 
-  def reader
+  def read_pdf
     PDF::Reader.new(@input_pdf)
   end
 
-  def topics(set)
+  def read_pages
+    if @page_range
+      read_pdf.pages[@page_range]
+    else
+      read_pdf.pages
+    end
+  end
+
+  def topics
     level_a = []
     level_b = []
 
-    self.reader.pages.each do |page|
-      # puts page.text.to_s.dump
+
+    read_pages.each do |page|
       case page.text.to_s
-      when REGEXP[set][:level_a]
+      when REGEXP[SET][:level_a]
         # puts $1
         level_a << $1
-      when REGEXP[set][:level_b]
+      when REGEXP[SET][:level_b]
         # puts $1
         level_b << $1
       end  
@@ -46,10 +57,12 @@ class Parser
     self.topics = topics
   end
 
-  def find_topics(set)
-    puts topics(set)
-  end  
+  def find_topics
+    topics
+  end
+
+
 end
 
-p = Parser.new("CIS_Red_Hat_Enterprise_Linux_7_Benchmark_v1.1.0.pdf")
-p.find_topics("a")
+# p = Parser.new("CIS_Red_Hat_Enterprise_Linux_7_Benchmark_v1.1.0.pdf")
+# p.find_topics("a")
