@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
-gem 'pdf-reader'
 gem 'rspec'
+gem 'parslet'

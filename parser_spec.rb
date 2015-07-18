@@ -1,27 +1,23 @@
 require_relative 'parser'
 
-describe Parser do
+describe Scrub do
   before do
     
     cur_dir = File.dirname(__FILE__)
 
-    @sample_document = "#{cur_dir}/sample.pdf"
-    @parser = Parser.new(@sample_document)
+    @sample_document = "#{cur_dir}/CIS_Red_Hat_Enterprise_Linux_7_Benchmark_v1.0.0.txt"
+    
 
   end
 
-  it "opens a pdf and creates a PDF Reader object" do
-    @parser.open_document
-    expect(@parser.document.class).to eq(PDF::Reader)
+  it "should open a text file" do
+    doc = Scrub.new
+    expect(doc.open_file(@sample_document).class).to eq(File)
   end
 
-  it "opens a pdf and verifies author" do
-    @parser.open_document
-    expect(@parser.info[:Author]).to eq("blake")
+  it "should find a line of text starting with 1.1.1" do
+    doc = Scrub.new
+    doc.start
   end
 
-  it "opens a pdf and reads information" do
-    @parser.open_document
-    expect(@parser.text.length).to eq(172)
-  end
 end
