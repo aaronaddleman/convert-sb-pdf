@@ -5,6 +5,25 @@ class Parser
 
   REGEXP = {
     "a" => {
+      # (?:^|\n|\s)
+      # ?:           Do not register as a group capture 
+      # ^            Start of line
+      # |            Or
+      # \n           Start with new line
+      # |            Or
+      # \s           Start with a single space
+      #
+      #
+      # ([1-9]\s[AC-Z][a-zA-Z,\s]*?)
+      # [1-9]        Start with a number between 1 to 9
+      # \s           One single space
+      # [AC-Z]       Start with an A or C through Z
+      # [a-zA-Z,\s]  Match a through z or A through Z or a , or a space
+      # *            Repeat the previous pattern
+      # ?            Be non greedy
+      #
+      # \n           Match a \n
+      # {1}          Previous pattern stop at first match
       :level_a => Regexp.new('(?:^|\n|\s)([1-9]\s[AC-Z][a-zA-Z,\s]*?)\n{1}'),
       :level_b => Regexp.new('(?:^|\n|\s)([1-9]\.[1-9]\s[a-zA-Z,\s]*?)\n{1}')
     },
@@ -54,14 +73,15 @@ class Parser
       :level_b => level_b
     }
 
-    self.topics = topics
   end
 
   def find_topics
     topics
   end
 
-
+  def to_s
+    self.topics[:level_a].join("\n")
+  end
 end
 
 # p = Parser.new("CIS_Red_Hat_Enterprise_Linux_7_Benchmark_v1.1.0.pdf")
