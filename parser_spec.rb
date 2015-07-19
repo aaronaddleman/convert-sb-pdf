@@ -58,4 +58,15 @@ describe "parser" do
       expect(@redhat_partial_topics[:level_a][0]).to eq("2 OS Services")
     end
   end
+
+  describe "print topics" do
+    before(:all) do
+      @redhat_all_topics = Parser.new(@redhat_pdf_file)
+      @redhat_all_topics.find_topics
+    end
+
+    it "should list all topics" do
+      expect(@redhat_all_topics.to_s).to eq("1 Install Updates, Patches and Additional Security Software\n2 OS Services\n3 Special Purpose Services\n4 Network Configuration and Firewalls\n5 Logging and Auditing\n6 System Access, Authentication and Authorization\n7 User Accounts and Environment\n8 Warning Banners\n9 System Maintenance")
+    end
+  end
 end
